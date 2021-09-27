@@ -1,37 +1,39 @@
 #include <iostream>
-#include "Box.h"
+#include <string>
+#include "Movie.h"
 using namespace std;
 
 int main()
 {
-	double vb1, vb2, vb3;
-	Box b1(3.5, 4.4, 5.0, false), b2, b3;
+	double p1, p2, p3;
+	Movie m1("후쿠오카", "장률", 7.71), m2("카일라스 가는 길", "정형민", 9.72), m3;
 
-	b3.setHeight(4.0);
-	b3.setLength(5.0);
-	b3.setWidth(2.4);
+	m3.setName("이별식당");
+	m3.setDirector("임왕태");
+	m3.setPoint(8.06);
 
 	cout << "========================================" << endl;
-	cout << "박스 1 "; b1.print();
-	cout << "박스 2 "; b2.print();
-	cout << "박스 3 "; b3.print();
+	m1.print();
+	m2.print();
+	m3.print();
 	cout << "========================================" << endl;
-	vb1 = b1.getVolume();
-	vb2 = b2.getVolume();
-	vb3 = b3.getVolume();
+	p1 = m1.getPoint();
+	p2 = m2.getPoint();
+	p3 = m3.getPoint();
 
-	if (vb1 > vb2) {
-		if (vb1 > vb3)
-			cout << "박스1의 부피가 가장 큽니다 : " << vb1;
+	if (p1 > p2) {
+		if (p1 > p3)
+			cout << "가장 평점이 좋은 영화 : " << m1.getName() << endl;
 		else
-			cout << "박스3의 부피가 가장 큽니다 : " << vb3;
+			cout << "가장 평점이 좋은 영화 : " << m3.getName() << endl;
 	}
 	else {
-		if (vb2 > vb3)
-			cout << "박스2의 부피가 가장 큽니다 : " << vb2;
+		if (p2 > p3)
+			cout << "가장 평점이 좋은 영화 : " << m2.getName() << endl;
 		else
-			cout << "박스3의 부피가 가장 큽니다 : " << vb3;
+			cout << "가장 평점이 좋은 영화 : " << m3.getName() << endl;
 	}
+
 	cout << endl;
 
 	return 0;
