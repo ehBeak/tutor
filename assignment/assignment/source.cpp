@@ -1,40 +1,62 @@
 #include <iostream>
-#include <string>
-#include "Movie.h"
+#include <cstring>
 using namespace std;
 
-int main()
-{
-	double p1, p2, p3;
-	Movie m1("후쿠오카", "장률", 7.71), m2("카일라스 가는 길", "정형민", 9.72), m3;
+class Book {
+	char* title;	// 책 제목
+	int price;		// 책 가격
 
-	m3.setName("이별식당");
-	m3.setDirector("임왕태");
-	m3.setPoint(8.06);
 
-	cout << "========================================" << endl;
-	m1.print();
-	m2.print();
-	m3.print();
-	cout << "========================================" << endl;
-	p1 = m1.getPoint();
-	p2 = m2.getPoint();
-	p3 = m3.getPoint();
+public:
+	Book(const char* t, int p);
+	~Book();
+	void set(const char* t, int p);
+	void show() { cout << title << ' ' << price << "원" << endl; }
 
-	if (p1 > p2) {
-		if (p1 > p3)
-			cout << "가장 평점이 좋은 영화 : " << m1.getName() << endl;
-		else
-			cout << "가장 평점이 좋은 영화 : " << m3.getName() << endl;
-	}
-	else {
-		if (p2 > p3)
-			cout << "가장 평점이 좋은 영화 : " << m2.getName() << endl;
-		else
-			cout << "가장 평점이 좋은 영화 : " << m3.getName() << endl;
-	}
+	//깊은 복사 생성자
+	Book(const Book& b);
+};
 
-	cout << endl;
+// 생성자
+Book::Book(const char* t, int p) {
+	
+	//1. 동적 메모리 할당
+	title = new char[strlen(t) + 1];
 
-	return 0;
+	//2. 메모리에 복사
+	strcpy(title, t);
+
+	price = p;
+
+}
+
+Book::Book(const Book& b) {
+	//1. 동적 메모리 할당
+	title = new char[strlen(b.title) + 1];
+
+	//2. 메모리에 복사
+	strcpy(title, b.title);
+
+	price = b.price;
+}
+
+// 소멸자
+Book::~Book() { delete[] title; }
+
+// set함수
+void Book::set(const char* t, int p) {
+
+	delete[] title;
+	title = new char[strlen(t) + 1];
+	strcpy(title, t);
+
+	price = p;
+}
+
+int main() {
+	Book cpp("명품C++", 10000);
+	Book java(cpp);
+	java.set("명품자바", 12000);
+	cpp.show();
+	java.show();
 }
