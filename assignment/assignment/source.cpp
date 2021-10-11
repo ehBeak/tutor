@@ -1,62 +1,69 @@
 #include <iostream>
-#include <cstring>
+
 using namespace std;
 
-class Book {
-	char* title;	// 책 제목
-	int price;		// 책 가격
-
-
+class Time
+{
+private:
+	int hour;
+	int minute;
+	int second;
 public:
-	Book(const char* t, int p);
-	~Book();
-	void set(const char* t, int p);
-	void show() { cout << title << ' ' << price << "원" << endl; }
-
-	//깊은 복사 생성자
-	Book(const Book& b);
+	Time(int h = 0, int m = 0, int s = 0) :hour(h), minute(m), second(s) { }
+	~Time() { }
+	void setHour(int h) { hour = h; }
+	void setMinute(int m) { minute = m; }
+	void setSecond(int s) { second = s; }
+	int getHour() { return hour; }
+	int getMinute() { return minute; }
+	int getSecond() { return second; }
+	void print() { cout << "시간은" << hour << ":" << minute << ":" << second << endl; }
 };
 
-// 생성자
-Book::Book(const char* t, int p) {
-	
-	//1. 동적 메모리 할당
-	title = new char[strlen(t) + 1];
-
-	//2. 메모리에 복사
-	strcpy(title, t);
-
-	price = p;
-
+// 여기에 전역함수 isEqual을 오버로딩하세요.
+// 객체 비교를 위한 전역함수
+bool isEqual(Time* obj1, Time* obj2) {
+	if (obj1->getHour() != obj2->getHour()) {
+		return false;
+	}
+	if (obj1->getMinute() != obj2->getMinute()) {
+		return false;
+	}
+	if (obj1->getSecond() != obj2->getSecond()) {
+		return false;
+	}
+	return true;
 }
 
-Book::Book(const Book& b) {
-	//1. 동적 메모리 할당
-	title = new char[strlen(b.title) + 1];
-
-	//2. 메모리에 복사
-	strcpy(title, b.title);
-
-	price = b.price;
+bool isEqual(Time& obj1, Time& obj2) {
+	if (obj1.getHour() != obj2.getHour()) {
+		return false;
+	}
+	if (obj1.getMinute() != obj2.getMinute()) {
+		return false;
+	}
+	if (obj1.getSecond() != obj2.getSecond()) {
+		return false;
+	}
+	return true;
 }
 
-// 소멸자
-Book::~Book() { delete[] title; }
 
-// set함수
-void Book::set(const char* t, int p) {
+void main()
+{
+	Time t1(10, 15, 20), t2;
+	Time& tt1 = t1, & tt2 = t2;
+	Time* pt1 = &t1, * pt2 = &t2;
 
-	delete[] title;
-	title = new char[strlen(t) + 1];
-	strcpy(title, t);
+	t2.setHour(10);
+	t2.setMinute(15);
+	t2.setSecond(20);
 
-	price = p;
-}
+	cout << "t1 ";
+	t1.print();
+	cout << "t2 ";
+	t2.print();
 
-int main() {
-	Book cpp("명품C++", 10000);
-	Book java(cpp);
-	java.set("명품자바", 12000);
-	cpp.show();
-	java.show();
+	cout << "t1과 t2의 시간은 같습니다. : " << isEqual(tt1, tt2) << endl;		//isEqual 함수의 리턴 타입은 bool
+	cout << "t1과 t2의 시간은 같습니다. : " << isEqual(pt1, pt2) << endl;		//따라서, 참이면 1, 거짓이면 0이 출력됨
 }
