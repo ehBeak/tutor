@@ -1,69 +1,51 @@
 #include <iostream>
-
 using namespace std;
 
-class Time
+class Complex
 {
-private:
-	int hour;
-	int minute;
-	int second;
+	// 필요한 멤버 구성
 public:
-	Time(int h = 0, int m = 0, int s = 0) :hour(h), minute(m), second(s) { }
-	~Time() { }
-	void setHour(int h) { hour = h; }
-	void setMinute(int m) { minute = m; }
-	void setSecond(int s) { second = s; }
-	int getHour() { return hour; }
-	int getMinute() { return minute; }
-	int getSecond() { return second; }
-	void print() { cout << "시간은" << hour << ":" << minute << ":" << second << endl; }
+	friend Complex add(Complex, Complex);
+	Complex(double r, double i) { re = r; im = i; }
+	Complex(double r) { re = r; im = i; }
+	Complex() { re = im = 0; }
+	void Ouput() {
+		cout << re << " + " << im << "i" << endl;
+	}
+
+	ostream& operator<<(ostream& os) {
+		os << this->re << " + " << this->im << "i" << endl;
+		return os;
+	}
+private:
+	double re, im;
 };
 
-// 여기에 전역함수 isEqual을 오버로딩하세요.
-// 객체 비교를 위한 전역함수
-bool isEqual(Time* obj1, Time* obj2) {
-	if (obj1->getHour() != obj2->getHour()) {
-		return false;
-	}
-	if (obj1->getMinute() != obj2->getMinute()) {
-		return false;
-	}
-	if (obj1->getSecond() != obj2->getSecond()) {
-		return false;
-	}
-	return true;
-}
-
-bool isEqual(Time& obj1, Time& obj2) {
-	if (obj1.getHour() != obj2.getHour()) {
-		return false;
-	}
-	if (obj1.getMinute() != obj2.getMinute()) {
-		return false;
-	}
-	if (obj1.getSecond() != obj2.getSecond()) {
-		return false;
-	}
-	return true;
+// 필요한 전역 함수 정의
+Complex add(Complex a1, Complex a2) {
+	return Complex(a1.re + a2.re, a1.im + a2.im);
 }
 
 
-void main()
+
+int main()
 {
-	Time t1(10, 15, 20), t2;
-	Time& tt1 = t1, & tt2 = t2;
-	Time* pt1 = &t1, * pt2 = &t2;
+	Complex c1(1, 2), c2(3, 4);
+	Complex c3 = c1 + c2;
 
-	t2.setHour(10);
-	t2.setMinute(15);
-	t2.setSecond(20);
+	c1 << cout;
 
-	cout << "t1 ";
-	t1.print();
-	cout << "t2 ";
-	t2.print();
+	cout << c3 << endl;
 
-	cout << "t1과 t2의 시간은 같습니다. : " << isEqual(tt1, tt2) << endl;		//isEqual 함수의 리턴 타입은 bool
-	cout << "t1과 t2의 시간은 같습니다. : " << isEqual(pt1, pt2) << endl;		//따라서, 참이면 1, 거짓이면 0이 출력됨
+	c3 = c3 + 1;
+	cout << c3 << endl;
+
+	cout << "c1, c2, c3 : " << endl;
+	c3 << (c2 << (c1 << cout));
+	cout << endl;
+
+	cout << "c1, c2, c3 : " << endl;
+	cout << c1 << c2 << c3 << endl; // Ostream& operator+(Ostream& c1, Complex& c2)
+	// cout.operator+(c1)
+	return(0);
 }
