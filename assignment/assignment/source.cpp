@@ -1,115 +1,221 @@
 #include <iostream>
+#include <string>
+#define PI 3.141592
+
 using namespace std;
 
-class Date
+class Shape
 {
+protected:
+	int width;
+	int height;
 public:
-	int year;
-	int month;
-	int day;
+	// 여기에 도형 클래스의 생성자와 멤버함수 정의
 
-	Date() {
-		year = 0;
-		month = 0;
-		day = 0;
+	Shape(int w, int h) {
+		width = w; height = h;
 	}
-	Date(int y, int m, int d) {
-		year = y;
-		month = m;
-		day = d;
+	
+	virtual void print() {
+		cout << "SHAPE" << endl;
+		cout << "면적: " << height*width << endl;
 	}
-	~Date() {}
+	
+};
 
-	Date operator++() {
+class TwoDimShape : public Shape
+{
+private:
+	int area;
+public:
+	// 여기에 2차원도형 클래스의 생성자와 멤버함수들 정의
 
-		Date d(0, 0, 0);
+	TwoDimShape(int w, int h) : Shape(w, h) {
+		area = w * h;
+	}
 
-		d.day = this->day;
-		d.month = this->month;
-		d.year = this->year;
-
-		if (d.day == 31) {
-			if (d.month == 12) {
-				d.day = 1; d.month = 1; d.year += 1;
-			}
-			else {
-				d.day = 1; d.month += 1; //year = this->year;
-			}
-		}
-		else {
-			d.day += 1; //month = this->month; year = this->year;
-		}
-
-		return d;
+	void print() {
+		cout << "TwoDimShape" << endl;
+		cout << "면적: " << area << endl;
 	}
 };
-ostream& operator<<(ostream& os, const Date& d) {
-	os << d.year << "년" << d.month << "월" << d.day << "일" << endl;
-	return os;
+
+class ThreeDimShape : public Shape
+{
+private:
+	int volume;
+public:
+	// 여기에 3차원도형 클래스의 생성자와 멤버함수들 정의
+
+	ThreeDimShape(int w, int h, int l) : Shape(w, h) {
+		volume = w * h * l;
+	}
+
+	void print() {
+		cout << "ThreeDimShape" << endl;
+		cout << "부피: " << volume << endl;
+	}
+};
+
+class Rectangle : public TwoDimShape
+{
+	// 사각형 클래스에 추가 멤버변수 없음!
+public:
+	// 여기에 사각형 클래스의 생성자와 멤버함수 정의
+	Rectangle(int w, int h) : TwoDimShape(w, h) {
+
+	}
+	double getArea()
+	{
+		return width * height;
+	}
+
+	void print() {
+		cout << "Rectangle" << endl;
+		cout << "면적: " << getArea() << endl;
+	}
+
+};
+
+class Ellipse : public TwoDimShape
+{
+	// 타원 클래스에 추가 멤버변수 없음!
+public:
+	// 여기에 타원 클래스의 생성자와 멤버함수 정의
+
+	Ellipse(int w, int h) : TwoDimShape(w, h){
+
+	}
+
+
+	double getArea()
+	{
+		return width * height * PI / 4;
+	}
+
+	void print() {
+		cout << "Ellipse" << endl;
+		cout << "부피: " << getArea() << endl;
+	}
+
+};
+
+class Triangle : public TwoDimShape
+{
+	// 삼각형 클래스에 추가 멤버변수 없음!
+public:
+	// 여기에 삼각형 클래스의 생성자와 멤버함수 정의
+
+	Triangle(int w, int h) : TwoDimShape(w, h) {
+
+	}
+
+	double getArea()
+	{
+		return width * height / 2;
+	}
+
+	void print() {
+		cout << "Triangle" << endl;
+		cout << "부피: " << getArea() << endl;
+	}
+};
+
+class Sphere : public ThreeDimShape
+{
+private:
+	int radius;
+public:
+	// 여기에 구 클래스의 생성자와 멤버함수 정의
+	Sphere(int w, int h, int l) : ThreeDimShape(w, h, l) {
+		radius = l;
+	}
+
+	double getVolume()
+	{
+		return ((double)3 / 4) * radius * radius * radius * PI;
+	}
+
+	void print() {
+		cout << "Sphere" << endl;
+		cout << "부피: " << getVolume() << endl;
+	}
+};
+
+class Cube : public ThreeDimShape
+{
+private:
+	int base;
+public:
+	// 여기에 육면체 클래스의 생성자와 멤버함수 정의
+
+	Cube(int w, int h, int l) : ThreeDimShape(w, h, l) {
+		base = l;
+	}
+
+
+	double getVolume()
+	{
+		return width * height * base;
+	}
+
+	void print() {
+		cout << "Cube" << endl;
+		cout << "부피: " << getVolume() << endl;
+	}
+};
+
+class Cylinder : public ThreeDimShape
+{
+private:
+	int radius;
+public:
+	// 여기에 원통 클래스의 생성자와 멤버함수 정의
+
+	Cylinder(int w, int h, int l) : ThreeDimShape(w, h, l) {
+		radius = l;
+	}
+
+	double getVolume()
+	{
+		return radius * radius * PI * height;
+	}
+
+	void print() {
+		cout << "Cylinder" << endl;
+		cout << "부피: " << getVolume() << endl;
+	}
+};
+
+void printShape(Shape *s)
+{
+	s->print();
 }
-int main() {
-	Date d1(2020, 12, 31);
-	cout << d1;
-	cout << "++ 연산자 : ";
-	//++d1; // d1.operator++()
-	cout << ++d1;
 
-	cout << "한 번 더 ++ 연산자 : ";
-	cout << ++d1;
-	/*Date d2(2020, 12, 31);
-	cout << d2;
-	cout << "-- 연산자 : ";
-	cout << --d2;
-	cout << endl;*/
+int main(void)
+{
+	// Ellipse(1,2), Rectangle(3,4), Triangle(5,6), 
+	// Sphere(7,8,9), Cube(10,11,12), Cylinder(13,14,15)
+	// 위와 같은 6개의 객체를 생성해서 up-casting해야 아래의 반복문을 사용할 수 있음
+	TwoDimShape* arrayOfTwoDimShape[3];
 
-	/*Date d3(2021, 1, 1);
-	cout << d3;
-	cout << "++ 연산자 : ";
-	cout << ++d3;*/
-	/*Date d4(2021, 1, 1);
-	cout << d4;
-	cout << "-- 연산자 : ";
-	cout << --d4;*/
+	arrayOfTwoDimShape[0] = new Ellipse(1, 2);
+	arrayOfTwoDimShape[1] = new Rectangle(3, 4);
+	arrayOfTwoDimShape[2] = new Triangle(5, 6);
+
+
+	ThreeDimShape* arrayOfThreeDimShape[3];
+
+	arrayOfThreeDimShape[0] = new Sphere(7, 8, 9);
+	arrayOfThreeDimShape[1] = new Cube(10, 11, 12);
+	arrayOfThreeDimShape[2] = new Cylinder(13, 14, 15);
+
+
+	for (int i = 0; i < 3; i++)
+	{
+		printShape(arrayOfTwoDimShape[i]);
+		printShape(arrayOfThreeDimShape[i]);
+	}
+
 	return 0;
 }
-
-//#include <iostream>
-//#include <string>
-//
-//using namespace std;
-//
-//class Employee {
-//private:
-//	string name;
-//	int salary;
-//public:
-//	Employee() {
-//		name = "Unknown";
-//		salary = 0;
-//	}
-//	Employee(string name, int salary)
-//	{
-//		this->name = name;
-//		this->salary = salary;
-//	}
-//
-//	operator int() { return salary; }
-//};
-//
-//int main()
-//{
-//	Employee e1("홍길동", 100);
-//	Employee e2("홍길서", 110);
-//
-//	int salary = e1;
-//	cout << "홍길동의 salary = " << salary << endl;
-//
-//	cout << "홍길서의 salary = " << e2 << endl;
-//
-//	if (e1 > e2)
-//		cout << "홍길동의 급여가 높다" << endl;
-//	else
-//		cout << "홍길서의 급여가 높다" << endl;
-//
-//	return 0;
-//}
